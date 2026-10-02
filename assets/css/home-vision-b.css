@@ -1,5 +1,5 @@
 /* =============================================================================
-   VISION, STUDENT VERSION (mock, 2 Oct 2026). #vision-b, classes vlb-.
+   VISION, STUDENT VERSIONS (mock, 2 Oct 2026). #vision-b and #vision-c, classes vlb-.
    The student's hand-drawn valley on the same ink band as the live section,
    with the same words in the same places. Her painting is a stack of layers
    on one artboard, 2048 x 1552 (build/vision-student.py). This file places
@@ -8,7 +8,7 @@
    the stage in a longer runway and plays night into first light over it.
    ========================================================================== */
 
-#vision-b.vlb {
+.vlb {
   --vlb-h: clamp(30rem, calc(100svh - var(--nav-h)), 64rem);
   --vlb-pad: clamp(1.25rem, 5svh, 3.5rem);
   --vlb-fs: clamp(2.125rem, .75rem + 4.9vw, 5.25rem);
@@ -43,7 +43,7 @@
 }
 /* without script only first light is shown */
 .vlb-layer[data-layer="sky-night"], .vlb-layer[data-layer="land-night"],
-.vlb-layer[data-layer="close"], .vlb-layer[data-layer="reactor"] { display: none; }
+.vlb-layer[data-layer="close"], .vlb-layer[data-layer="reactor"], .vlb-layer[data-layer="lights"] { display: none; }
 
 /* ---- with script: the artboard in px, moved by one transform ---- */
 .vlb.is-live .vlb-art { left: 0; top: 0; bottom: auto; aspect-ratio: auto; will-change: transform; }
@@ -108,7 +108,7 @@
 .vlb.is-live:not(.is-still) .vlb-stage { position: sticky; top: var(--nav-h); }
 
 @media (max-height: 760px) and (min-width: 640px) {
-  #vision-b.vlb { --vlb-pad: 1.25rem; --vlb-fs: clamp(2rem, .8rem + 3.3vw, 3.6rem); }
+  .vlb { --vlb-pad: 1.25rem; --vlb-fs: clamp(2rem, .8rem + 3.3vw, 3.6rem); }
 }
 @media (max-width: 639px) { .vlb-gloss { font-size: var(--text-base); } }
 @media (min-width: 900px) { .vlb-gloss { max-width: none; white-space: nowrap; } }

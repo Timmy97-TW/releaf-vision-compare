@@ -8,7 +8,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="robots" content="noindex" />
-  <title>Mock &middot; vision section, current vs student</title>
+  <title>Mock &middot; vision section, current vs student versions</title>
   <link rel="icon" href="assets/img/logo.png" />
   <link rel="preload" href="assets/fonts/inter-variable.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="assets/css/tokens.css" />
@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="assets/css/page.css" />
   <link rel="stylesheet" href="assets/css/home.css?v=20261001-home28" />
   <link rel="stylesheet" href="assets/css/home-vision.css?v=20261001-home28" />
-  <link rel="stylesheet" href="assets/css/home-vision-b.css?v=mock2" />
+  <link rel="stylesheet" href="assets/css/home-vision-b.css?v=mock3" />
   <style>
     .mk { background: #fffbe6; border-block: 1px solid #f0e2a8; padding: .9rem 0; font-size: .9375rem; color: #4a3d0a; }
     .mk .band__inner { display: flex; flex-wrap: wrap; gap: .4rem 1.5rem; align-items: baseline; }
@@ -68,9 +68,9 @@
 
   </section>
 
-  <div class="mk" id="mk-b"><div class="band__inner"><b>B &middot; Student&rsquo;s hand-drawn valley, optimised</b><span>Her painting, lit from night to first light; each reactor lights its own field.</span><a href="#mk-a">Back to A</a><a href="#mk-src">Her original frames</a></div></div>
+  <div class="mk" id="mk-b"><div class="band__inner"><b>B &middot; Student&rsquo;s hand-drawn valley, optimised</b><span>Her painting, lit from night to first light; each reactor lights its own field.</span><a href="#mk-a">Back to A</a><a href="#mk-c">Jump to C</a><a href="#mk-src">Her original frames</a></div></div>
 
-  <section class="band band--dark vlb" id="vision-b" aria-labelledby="vision-b-title">
+  <section class="band band--dark vlb" id="vision-b" data-vlb="b" data-img="assets/img/home/vision-student" aria-labelledby="vision-b-title">
     <div class="band__inner vlb-head">
       <p class="vlb-intro">Built from the needs of one farm,<br /> one field at a time.</p>
     </div>
@@ -104,6 +104,44 @@
     </div>
   </section>
 
+  <div class="mk" id="mk-c"><div class="band__inner"><b>C &middot; Her valley with farm details added</b><span>Houses, trees, farmers and crops drawn by code (AI-assisted) in her manner, then lit the same way as B.</span><a href="#mk-a">Back to A</a><a href="#mk-b">Back to B</a><a href="#mk-src">Her original frames</a></div></div>
+
+  <section class="band band--dark vlb" id="vision-c" data-vlb="c" data-img="assets/img/home/vision-student-c" aria-labelledby="vision-c-title">
+    <div class="band__inner vlb-head">
+      <p class="vlb-intro">Built from the needs of one farm,<br /> one field at a time.</p>
+    </div>
+    <div class="vlb-run" id="vlc-run">
+      <div class="vlb-stage">
+        <div class="vlb-art" role="img"
+             aria-label="A hand-drawn valley at first light: a patchwork of fields with a river running through them, a green hill on the left and mountains behind, the sun rising over a ridge on the right. Farmhouses, trees, palms and farmers in conical hats stand among the fields. In almost every field a small reactor glows green and lights that field and no other.">
+          <img class="vlb-layer" data-layer="sky-night" style="left:0.0000%;top:0.0000%;width:100.0000%;height:56.4433%"
+               src="assets/img/home/vision-student-c/sky-night.webp" width="2048" height="876" alt="" loading="lazy" decoding="async" />
+          <img class="vlb-layer" data-layer="sky-dawn" style="left:0.0000%;top:0.0000%;width:100.0000%;height:56.4433%"
+               src="assets/img/home/vision-student-c/sky-dawn.webp" width="2048" height="876" alt="" loading="lazy" decoding="async" />
+          <img class="vlb-layer" data-layer="sun" style="left:78.3203%;top:45.4897%;width:7.6172%;height:10.0515%"
+               src="assets/img/home/vision-student-c/sun.webp" width="156" height="156" alt="" loading="lazy" decoding="async" />
+          <img class="vlb-layer" data-layer="land-night" style="left:0.0000%;top:40.2062%;width:100.0000%;height:59.7938%"
+               src="assets/img/home/vision-student-c/land-night.webp" width="2048" height="928" alt="" loading="lazy" decoding="async" />
+          <img class="vlb-layer" data-layer="land-dawn" style="left:0.0000%;top:40.2062%;width:100.0000%;height:59.7938%"
+               src="assets/img/home/vision-student-c/land-dawn.webp" width="2048" height="928" alt="" loading="lazy" decoding="async" />
+          <img class="vlb-layer" data-layer="close" style="left:42.8223%;top:71.1340%;width:18.7500%;height:13.9175%"
+               src="assets/img/home/vision-student-c/close.webp" width="1920" height="1080" alt="" loading="lazy" decoding="async" />
+          <img class="vlb-layer" data-layer="lights" style="left:0.0000%;top:40.2062%;width:100.0000%;height:59.7938%"
+               src="assets/img/home/vision-student-c/lights.webp" width="2048" height="928" alt="" loading="lazy" decoding="async" />
+          <img class="vlb-layer" data-layer="reactor" style="left:51.6519%;top:78.3183%;width:1.0215%;height:1.8737%"
+               src="assets/img/home/vision-student-c/reactor.webp" width="251" height="349" alt="" loading="lazy" decoding="async" />
+        </div>
+        <p class="vlb-rx" aria-hidden="true">This farm&rsquo;s reactor</p>
+        <div class="vlb-sky">
+          <div class="band__inner">
+            <h2 class="vlb-line" id="vision-c-title">Every farmer a biomanufacturer<span class="vlb-stop">.</span></h2>
+            <p class="vlb-gloss">Toward a future where plant protection lies in each farmer&rsquo;s hands.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="mk-src" id="mk-src">
     <div class="band__inner">
       <h2>The student&rsquo;s original frames</h2>
@@ -122,12 +160,17 @@
   <script src="assets/data/site-nav.js"></script>
   <script src="assets/js/nav.js"></script>
   <script src="assets/js/home-vision.js?v=20261001-home28" defer></script>
-  <script src="assets/js/home-vision-b-data.js?v=mock2" defer></script>
-  <script src="assets/js/home-vision-b.js?v=mock2" defer></script>
+  <script src="assets/js/home-vision-b-data.js?v=mock3" defer></script>
+  <script src="assets/js/home-vision-c-data.js?v=mock3" defer></script>
+  <script src="assets/js/home-vision-b.js?v=mock3" defer></script>
   <!-- mock only: ?vlb=<0..1> shows B alone, held at that point, for screenshots -->
   <script>
-    if (/[?&]vlb=/.test(location.search))
-      ["#mk-a", "#vision", "#mk-b", ".vlb-head"].forEach(function (s) { document.querySelector(s).style.display = "none"; });
+    if (/[?&]vlb=/.test(location.search)) {
+      var only = (/[?&]only=(\w)/.exec(location.search) || [0, "b"])[1];
+      [].forEach.call(document.querySelectorAll(".mk, #vision, .vlb, .vlb-head"), function (el) {
+        if (!(el.classList.contains("vlb") && el.getAttribute("data-vlb") === only)) el.style.display = "none";
+      });
+    }
   </script>
 </body>
 </html>

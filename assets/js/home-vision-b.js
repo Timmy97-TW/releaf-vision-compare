@@ -2,8 +2,10 @@
    VISION, STUDENT VERSION (mock, 2 Oct 2026): "Every farmer a biomanufacturer."
 
    The student's hand-drawn valley, lit by this script. build/vision-student.py
-   cuts her painting into layers (assets/img/home/vision-student/) and writes
-   home-vision-b-data.js, which this file reads as window.__vlbData.
+   cuts her painting into layers and writes home-vision-b-data.js, which this
+   file reads as window.__vlbData.b. Version C (data-vlb="c") is the same
+   stage over the layers built with --details: farm details added by code,
+   and one more layer, the houses' lit windows.
 
    THE STORY, IN SCROLL ORDER
    1. Night, close on one field. Her reactor stands in it, and its light shows
@@ -28,9 +30,16 @@
 (function () {
   "use strict";
 
-  var D = window.__vlbData;
-  var sec = document.getElementById("vision-b");
-  if (!sec || !D) return;
+  // one stage per section: <section class="vlb" data-vlb="b" data-img="...">.
+  // data-vlb picks the section's data (window.__vlbData.b), data-img its pictures.
+  [].slice.call(document.querySelectorAll(".vlb[data-vlb]")).forEach(function (sec) {
+    try { play(sec, (window.__vlbData || {})[sec.getAttribute("data-vlb")]); } catch (err) { /* the CSS's last frame stays */ }
+  });
+
+  function play(sec, D) {
+  if (!D) return;
+  // mock only: ?only=c limits ?vlb= to that section
+  var ONLY = new URLSearchParams(location.search).get("only") || "b";
 
   var AW = D.aw, AH = D.ah, FOCAL = D.focal, K = D.poolK;
   var GREEN = "53,224,138";                          // --sig-green
@@ -46,9 +55,9 @@
   var label = sec.querySelector(".vlb-rx");
   var mq = window.matchMedia("(prefers-reduced-motion: reduce)");
   // mock only: ?vlb=0.4 holds the camera at that point, for screenshots
-  var FORCE = parseFloat(new URLSearchParams(location.search).get("vlb"));
+  var FORCE = sec.getAttribute("data-vlb") === ONLY ? parseFloat(new URLSearchParams(location.search).get("vlb")) : NaN;
 
-  var RECT = { "sky-night": D.sky, "sky-dawn": D.sky, sun: D.sun, "land-night": D.land, "land-dawn": D.land, close: D.close, reactor: D.reactor };
+  var RECT = { "sky-night": D.sky, "sky-dawn": D.sky, sun: D.sun, "land-night": D.land, "land-dawn": D.land, close: D.close, reactor: D.reactor, lights: D.lights };
   var imgs = [].slice.call(sec.querySelectorAll(".vlb-layer"));
   var L = {};
   imgs.forEach(function (el) { L[el.getAttribute("data-layer")] = el; });
@@ -177,6 +186,7 @@
     L["land-dawn"].style.opacity = smooth((p - 0.54) / 0.38).toFixed(3);
     L.sun.style.transform = "translate3d(0," + ((1 - sun) * SUN_DROP).toFixed(2) + "px,0)";
     pools.style.opacity = (1 - 0.18 * dawn).toFixed(3);
+    if (L.lights) L.lights.style.opacity = (1 - 0.85 * dawn).toFixed(3);   // the windows go out as day comes
 
     // the enlarged first field, only while it is sharper than the valley
     var closeA = clamp01((s / M.s1 - 2) / 2);
@@ -212,10 +222,10 @@
     if (label) {
       var la = 1 - smooth((p - 0.03) / 0.08);
       label.style.opacity = la.toFixed(3);
-      // beside the reactor on a wide screen, under it on a phone
+      // beside the reactor on a wide screen, over it on a phone
       var rw = L.reactor.offsetWidth * s, rh = L.reactor.offsetHeight * s;
       var lx = M.phone ? fx - label.offsetWidth / 2 : fx + rw * 0.5 + 16;
-      var ly = M.phone ? fy + rh * 0.62 + 12 : fy - 10;
+      var ly = M.phone ? fy - rh * 0.72 - label.offsetHeight - 14 : fy - 10;
       label.style.transform = "translate3d(" + lx.toFixed(1) + "px," + ly.toFixed(1) + "px,0)";
     }
     var a1 = smooth((p - 0.84) / 0.09), a2 = smooth((p - 0.89) / 0.09);
@@ -323,7 +333,7 @@
   // once the section is within two screens
   function eager() {
     imgs.forEach(function (el) { el.loading = "eager"; });
-    atlasImg.src = "assets/img/home/vision-student/pools.webp";
+    atlasImg.src = sec.getAttribute("data-img") + "/pools.webp";
   }
   if ("IntersectionObserver" in window) {
     var near = new IntersectionObserver(function (es) {
@@ -331,4 +341,5 @@
     }, { rootMargin: "200% 0px" });
     near.observe(sec);
   } else eager();
+  }
 })();
