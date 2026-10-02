@@ -1,0 +1,520 @@
+/* =============================================================================
+   ReLeaf: the homepage
+   -----------------------------------------------------------------------------
+   The page is one argument told in eight beats, in this order:
+
+     1  first visual   Farmer Chen's farm on top and a render of the housed
+                       reactor under it, found with the pointer (the spotlight)
+    1b  chapters       a dot rail in the right margin, one dot per section
+                       kicker: which beat you are in, and a way to jump. Wide
+                       screens only
+     2  problem        01 the threat, 02 the gap, 03 the hour and the five
+                       demands they earn, on white. home-problem.css holds
+                       their shared frame, and each has its own sheet:
+                       home-threat.css, home-gap.css, home-distance.css and
+                       (with the reactor) home-reactor.css
+     3  our answer     the reactor, the main character: one WebGL model on
+                       ink with the same five demands around it; pointing at
+                       a demand lights its parts (home-reactor.css)
+     4  synbio         the inside of the reactor: a header row, one figure,
+                       then the four modules as one run from light to protein
+     5  iHP            the people who shaped the five demands, and the one
+                       objection that became a design rule (home-ihp.css)
+     6  big picture    one line of seven stations from the forecast to the
+                       crop, with the work beside it (big-picture.css)
+     7  vision         "Every farmer a biomanufacturer.": one farm becomes a
+                       valley of them (home-vision.css)
+     8  explore        where to read next: a few pages, one line each
+
+   Rules that survived the redesign and should survive the next one:
+
+   · NOTHING HERE IS A NUMBER, QUOTE, DATE OR RESULT that is not also on a
+     sub-page with its evidence attached. The homepage is a door, not a source.
+     The problem arc may cite outside literature, only through its numbered
+     source list.
+   · NO DISCLAIMERS ("still a plan", "design intent", "illustration", "nothing
+     deployed"). Design is described as what the system does; an unmeasured
+     result is never stated as a measurement.
+   · THE PHOTOGRAPHS ARE ORDINARY on purpose. A cleanroom argues that you need
+     a facility; a folding table argues that you do not.
+   · ONE WebGL canvas, in #solution. Do not add a second one: the reactor is
+     one packed bundle (hardware/bioreactor/models/_pack.*), parsed once.
+   · EVERY SCROLL-DRIVEN EFFECT has a resting state that is correct with no
+     JavaScript and no motion. Check with prefers-reduced-motion and with
+     scripting off before shipping any change to the reactor, 03's figure or
+     the vision.
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-h) + 1rem); }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.68;
+  color: var(--black);
+  background: var(--white);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+img { display: block; max-width: 100%; }
+a { color: var(--leaf-700); text-underline-offset: .18em; }
+:focus-visible { outline: 2px solid var(--leaf-700); outline-offset: 3px; }
+
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+.sitenav-spacer { height: var(--nav-h); }
+/* nav.js draws the site bar; without scripting there is no bar to clear, so
+   nothing sticks, pins or scrolls to a place 68px below the top edge */
+@media (scripting: none) { :root { --nav-h: 0px; } .sitenav-spacer { display: none; } }
+
+/* homepage-only tokens: the ink ground, and the one accent that is allowed
+   to glow. --sig-green is the 520 nm the reactor actually runs on. */
+:root {
+  --ink:        #070b09;
+  --sig-green:  #35e08a;
+  --sig-dim:    #1b7f4d;   /* the chapters rail's current dot on white */
+}
+
+/* ---------------------------------------------------------------- bands --- */
+
+.band { padding: var(--sp-8) 0; }
+.band__inner { max-width: var(--max); margin: 0 auto; padding: 0 var(--sp-5); }
+@media (min-width: 640px) { .band__inner { padding: 0 var(--sp-6); } }
+/* THE RAIL GUTTER. From 1180px the chapters rail (1b) is fixed in the right
+   margin, and below about 1345px that margin is narrower than the rail. Every
+   column on the page (.band__inner here, .pb-inner in home-problem.css, the
+   reactor's --pad-x in home-reactor.css) pads by this one value, so the
+   sections keep one left edge and all of them clear the rail: 64px from the
+   window edge until the page's own margin is wider than that. */
+@media (min-width: 1180px) {
+  :root { --rail-gutter: max(var(--sp-6), calc(64px - max(0px, (100vw - var(--max)) / 2))); }
+  .band__inner { padding-inline: var(--rail-gutter); }
+}
+/* TWO GROUNDS ONLY: white and ink. The "tint" bands used to be pale leaf with a
+   leaf hairline top and bottom; they are plain white now, like every other light
+   band. The class stays so the markup does not have to change. */
+.band--tint { background: var(--white); }
+.band--dark { background: var(--ink); color: var(--leaf-100); }
+.band--dark a { color: var(--leaf-200); }
+
+.kicker {
+  margin: 0 0 var(--sp-4);
+  font-size: .6875rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--leaf-700);
+}
+.band--dark .kicker { color: var(--sig-green); }
+
+h2.band__title {
+  margin: 0 0 var(--sp-5);
+  font-family: var(--font-display);
+  font-size: var(--text-h2);
+  font-weight: 700; line-height: 1.14; letter-spacing: -.018em;
+  color: var(--leaf-900);
+  max-width: 26ch;
+}
+
+.lede { max-width: 62ch; font-size: var(--text-lede); line-height: 1.55; color: var(--gray-600); }
+.band--dark .lede { color: var(--leaf-200); }
+
+/* a small utility: fade-and-rise once, on entry (home.js piece 1). Visible
+   by default: only home.js hides it (.is-armed), and only for an element that
+   is still below the screen, so with scripting off, or a script that never
+   runs, it is simply there. */
+.rise { transition: opacity .7s ease, transform .7s ease; }
+.rise.is-armed:not(.in) { opacity: 0; transform: translateY(18px); }
+@media (prefers-reduced-motion: reduce) { .rise { transition: none; } }
+/* printed before the reader scrolled to it, an armed element is still there */
+@media print { .rise.is-armed { opacity: 1 !important; transform: none !important; transition: none !important; } }
+
+/* ============================================================= 1  HERO ==== */
+/* Farmer Chen's field, full screen, and a light that finds the bench
+   reactor standing among the people in it (Neo's design, 29 Sep; Marburg
+   2024 did the two-layer hero first).
+
+   THE LAYERS, bottom to top:
+     · .hero__frame--farm  the photograph and its wash, always whole.
+     · .hero__lens         the light. One element with a fixed soft round
+                           mask. Inside it, .hero__lens-in is the size of the
+                           hero and holds a faint ink veil (.hero__dim) and
+                           the reactor render; home.js moves and scales the
+                           lens and moves its contents the opposite way, so
+                           the reactor stays fixed on the page and the light
+                           slides over it.
+     · .hero__label        the machine's name, shown while the light rests
+                           on it.
+     · .hero__inner        the title and Farmer Chen's words.
+
+   WHY A LENS AND NOT A MASK ON THE PHOTO. Neo's first build moved a mask
+   gradient over the photograph by custom properties, and the browser
+   repainted a full-screen mask for every pointer move; that is the stutter
+   it had. Here the mask never changes: it is rasterised once and only the
+   compositor moves it. home.js writes transform and opacity, nothing else.
+
+   THE RESTING STATE IS THE FARM. The lens is transparent until home.js
+   lights it, so without script the farm is whole and the reactor is read
+   out by its alt text. The reactor is a cut-out with its own alpha
+   (build/hero-bench-cut.py), so through the light it stands in the field
+   among the people, with no backdrop of its own. home-hero.css holds the
+   sizes. */
+
+.hero {
+  position: relative; isolation: isolate;
+  background: var(--ink); color: var(--white);
+  min-height: calc(100vh - var(--nav-h, 68px));
+  min-height: calc(100svh - var(--nav-h, 68px));
+  display: grid;
+}
+.hero__frames { position: absolute; inset: 0; container-type: size; overflow: hidden; }
+.hero__frame { position: absolute; inset: 0; overflow: hidden; }
+.hero__frame img { width: 100%; height: 100%; object-fit: cover; }
+
+.hero__frame--farm { z-index: 1; }
+.hero__frame--farm img { object-position: 50% 42%; }
+
+/* The wash: a corner shadow for the title, a foot shadow for the quote, an
+   edge vignette on the right. Light, so the field keeps its daylight. */
+.hero__frame--farm::after {
+  content: ""; position: absolute; inset: 0; z-index: 2;
+  background:
+    radial-gradient(125% 80% at 0% 0%,
+      rgb(7 11 9 / .78) 0%, rgb(7 11 9 / .42) 30%, rgb(7 11 9 / .1) 54%, transparent 72%),
+    linear-gradient(180deg,
+      rgb(7 11 9 / .24) 0%, rgb(7 11 9 / .02) 36%, rgb(7 11 9 / .2) 72%, rgb(7 11 9 / .7) 100%),
+    linear-gradient(90deg, rgb(7 11 9 / .16) 0%, rgb(7 11 9 / .02) 52%, rgb(7 11 9 / .18) 74%, rgb(7 11 9 / .62) 100%);
+}
+
+/* THE LIGHT. Its box is the light at its widest (home.js sets --lens-w and
+   --lens-h from the machine's size); smaller lights are the same box scaled
+   down, so the mask is only ever shrunk, never stretched past its raster.
+   The light is fully open to 52% of its radius, so what it finds reads
+   clearly, then falls off as a smootherstep (6t^5 - 15t^4 + 10t^3) laid
+   down as ten stops, so it leaves the core and reaches nothing with no
+   slope and no ring. */
+.hero__lens {
+  --lens-edge: radial-gradient(closest-side,
+    #000 52%, rgb(0 0 0 / .991) 56.8%, rgb(0 0 0 / .942) 61.6%, rgb(0 0 0 / .837) 66.4%,
+    rgb(0 0 0 / .683) 71.2%, rgb(0 0 0 / .5) 76%, rgb(0 0 0 / .317) 80.8%,
+    rgb(0 0 0 / .163) 85.6%, rgb(0 0 0 / .058) 90.4%, rgb(0 0 0 / .009) 95.2%, transparent 100%);
+  position: absolute; left: 0; top: 0; z-index: 2;
+  width: var(--lens-w, 100cqw); height: var(--lens-h, 100cqh);
+  transform-origin: 0 0;
+  pointer-events: none;
+  opacity: 0;
+  -webkit-mask-image: var(--lens-edge);
+          mask-image: var(--lens-edge);
+}
+.hero.has-lens .hero__lens { will-change: transform, opacity; }
+.hero__lens-in {
+  position: absolute; left: 0; top: 0;
+  width: 100cqw; height: 100cqh;
+  transform-origin: 0 0;
+}
+.hero.has-lens .hero__lens-in { will-change: transform; }
+/* away from the machine the light only dims the field a little */
+.hero__dim { position: absolute; inset: 0; background: var(--ink); opacity: .22; }
+/* and close to it, a soft shade right behind the machine, so its lit lines
+   and glass read against the busy field (placed and faded by home.js) */
+.hero__halo {
+  position: absolute; left: 0; top: 0; width: 0; height: 0;
+  background: radial-gradient(closest-side, rgb(7 11 9 / .55), rgb(7 11 9 / .42) 45%, rgb(7 11 9 / .16) 75%, transparent);
+  opacity: 0;
+}
+
+/* The machine. hero-bench-*.jpg is a render of the bench reactor on the
+   hero's own ink, contained in its box, never cropped. home.js gives it a
+   soft elliptical mask round the machine (the zone), so only the machine
+   and a little ink around it ever show through the light; its opacity is
+   how near the light is to the machine. */
+.hero__frame--reactor { opacity: 0; }
+.hero__frame--reactor img { object-fit: contain; object-position: 50% 50%; }
+
+/* the machine's name, under it, while the light rests there */
+.hero__label {
+  position: absolute; left: 0; top: 0; z-index: 2;
+  margin: 0;
+  font-size: .8125rem; font-weight: 600; letter-spacing: .01em; white-space: nowrap;
+  color: rgb(255 255 255 / .82);
+  opacity: 0; pointer-events: none;
+}
+
+/* One column: the title top left, the foot bottom right, a spring between. */
+.hero__inner {
+  position: relative; z-index: 3;
+  width: 100%; max-width: var(--max); margin: 0 auto;
+  padding: clamp(3.5rem, 2rem + 6vh, 6.5rem) var(--sp-5) clamp(1.75rem, 1rem + 3vh, 3rem);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: auto 1fr auto;
+}
+@media (min-width: 640px) { .hero__inner { padding-left: var(--sp-6); padding-right: var(--sp-6); } }
+
+.hero__head { grid-row: 1; justify-self: start; }
+.hero__claim {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 750; color: var(--white);
+  text-wrap: balance;
+}
+
+.hero__foot { grid-row: 3; align-self: end; display: flex; justify-content: flex-end; }
+.hero__note { margin: 0; }
+.hero__note p { margin: 0; font-style: italic; text-wrap: pretty; }
+.hero__note p::before { content: "\201C"; }
+.hero__note p::after  { content: "\201D"; }
+
+@media (max-width: 800px) {
+  .hero__frame--farm img { object-position: 45% 50%; }
+  .hero__frame--farm::after {
+    background:
+      linear-gradient(180deg,
+        rgb(7 11 9 / .72) 0%, rgb(7 11 9 / .22) 30%, rgb(7 11 9 / .48) 62%, rgb(7 11 9 / .93) 100%);
+  }
+}
+/* a phone held upright gets the portrait files (index.html) */
+@media (max-aspect-ratio: 2/3) {
+  .hero__frame--farm img { object-position: 50% 50%; }
+}
+@media print {
+  .hero__lens, .hero__label { display: none; }
+}
+
+/* ========================================================= 1b  CHAPTERS === */
+/* A dot rail in the right margin. It has to survive white paper, the ink of
+   the reactor and the vision, and a photograph, so it carries its own blurred
+   pill rather than a colour chosen for one of them.
+
+   ONLY THE CURRENT CHAPTER SPEAKS. Ten labels sitting open in the margin are
+   a second navigation bar competing with the real one; ten dots and one
+   name are a position indicator. The rest arrive on hover and on focus, so a keyboard
+   reader gets the same page a mouse does.
+
+   It appears after the hero and hides itself below 1180px, where the margin it
+   lives in does not exist. */
+
+.chapters {
+  position: fixed; z-index: 30;
+  right: clamp(.5rem, 1.1vw, 1rem); top: 50%; transform: translateY(-50%);
+  opacity: 0; pointer-events: none;
+  transition: opacity .35s ease;
+}
+.chapters.is-shown { opacity: 1; pointer-events: auto; }
+/* a Tab into the rail shows it, in the hero and with scripting off too, so
+   focus never lands on a link nobody can see */
+.chapters:focus-within { opacity: 1; pointer-events: auto; }
+@media (max-width: 1179px) { .chapters { display: none; } }
+
+.chapters ol {
+  display: flex; flex-direction: column; gap: .1rem;
+  margin: 0; padding: .45rem .3rem; list-style: none;
+  border: 1px solid rgb(120 140 130 / .22); border-radius: 999px;
+  background: rgb(255 255 255 / .62);
+  -webkit-backdrop-filter: blur(10px) saturate(1.2);
+          backdrop-filter: blur(10px) saturate(1.2);
+  box-shadow: 0 8px 24px -18px rgb(7 11 9 / .8);
+}
+.chapters a {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  width: 1.35rem; height: 1.35rem; text-decoration: none;
+}
+/* the dot */
+.chapters i {
+  width: .42rem; height: .42rem; border-radius: 50%;
+  background: var(--gray-400);
+  transition: background .2s, transform .2s;
+}
+.chapters a:hover i { background: var(--leaf-700); transform: scale(1.35); }
+.chapters [aria-current] i { background: var(--sig-dim); transform: scale(1.5); }
+
+/* the label, which rides out to the left of its own dot */
+.chapters span {
+  position: absolute; right: calc(100% + .3rem);
+  padding: .22rem .6rem; border-radius: 999px;
+  background: rgb(7 11 9 / .86); color: var(--white);
+  font-size: .6875rem; font-weight: 650; letter-spacing: .02em; white-space: nowrap;
+  opacity: 0; transform: translateX(4px); pointer-events: none;
+  transition: opacity .18s ease, transform .18s ease;
+}
+.chapters a:hover span, .chapters a:focus-visible span { opacity: 1; transform: none; }
+/* The chapter you are in names itself WHILE THE PAGE IS MOVING, and gets out
+   of the way when you stop to read. Left open permanently it sits on the
+   right-hand column of the big picture; shown only on hover it is not a
+   position indicator at all. Scrolling is exactly the moment you want it. */
+/* It is a pill of its own, not bare text, so where it passes over the column
+   it reads as an overlay rather than printing onto the words under it. */
+.chapters.is-moving [aria-current] span {
+  opacity: 1; transform: none;
+  background: rgb(255 255 255 / .94); color: var(--leaf-900);
+  font-weight: 700;
+  box-shadow: 0 0 0 1px rgb(120 140 130 / .22), 0 4px 14px -6px rgb(7 11 9 / .45);
+}
+.chapters.is-moving.on-ink [aria-current] span {
+  background: rgb(7 11 9 / .9); color: var(--white);
+  box-shadow: 0 0 0 1px rgb(255 255 255 / .16), 0 4px 14px -6px rgb(0 0 0 / .8);
+}
+.chapters.on-ink i { background: rgb(255 255 255 / .38); }
+.chapters.on-ink [aria-current] i { background: var(--sig-green); }
+.chapters.on-ink ol { background: rgb(7 11 9 / .42); border-color: rgb(255 255 255 / .16); }
+
+@media (prefers-reduced-motion: reduce) {
+  .chapters, .chapters i, .chapters span { transition: none; }
+}
+
+/* ========================================================== 4  SYNBIO ===== */
+/* One header column, then the circuit figure and the four modules under it, on one line, each with a numbered disc in the colour of
+   its box in the figure. One numbering (1 to 4), one type family, and the
+   modules close the card: there is no caption (owner, 29 Sep), so the row
+   takes a little more room below than above and the card ends on it. */
+
+.sb__head { max-width: 46rem; margin-bottom: var(--sp-6); }
+.sb__head .kicker { margin-bottom: var(--sp-3); }
+.sb__head .band__title { margin-bottom: var(--sp-3); max-width: 26ch; }
+.sb__lede { margin: 0; max-width: 58ch; text-wrap: pretty; }
+
+/* 1 Oct (Jacquelyn: the outline round it read as generated). No box: the
+   figure and the four modules sit straight on the white, and the modules'
+   own rail is the only line. */
+.sb-card { margin: 0; background: var(--white); }
+
+/* the figure: its own width reserved by the <img>'s attributes. Narrower
+   than 42rem it scrolls sideways (60rem on a phone, so the labels stay
+   readable); the frame is a keyboard scroll container with a focus ring. */
+.sb-fig__frame { overflow-x: auto; }
+.sb-fig__frame:focus-visible { outline: 2px solid var(--leaf-700); outline-offset: -3px; }
+.sb-card img { display: block; min-width: 42rem; width: 100%; height: auto; }
+.sb-fig__swipe { display: none; }
+@media (max-width: 740px) {
+  .sb-fig__swipe {
+    display: block; margin: 0; padding: var(--sp-2) var(--sp-5);
+    font-size: var(--text-xs); line-height: 1.5; color: var(--gray-500);
+  }
+  .sb-fig__plate { position: relative; }
+  .sb-fig__plate::after {
+    content: ""; position: absolute; top: 0; right: 0; bottom: 0; width: 3rem;
+    pointer-events: none;
+    background: linear-gradient(90deg, rgb(255 255 255 / 0), rgb(255 255 255 / .92));
+  }
+  .sb-card img { min-width: 60rem; }
+}
+
+/* the four modules: numbered discs on one rail, under the figure */
+.sb-seq {
+  list-style: none; margin: 0; padding: var(--sp-6) 0 0;
+  display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+  column-gap: var(--sp-5);
+  position: relative;
+}
+.sb-step { position: relative; }
+/* the rail: from each disc to the next one */
+.sb-step:not(:last-child)::after {
+  content: ""; position: absolute; top: .8rem; left: 1.6rem; right: calc(-1 * var(--sp-5));
+  height: 1px; background: var(--gray-300);
+}
+/* --sb is the colour of that module's box in the BioRender figure, darkened
+   until white text on it clears 4.5:1 */
+.sb-step:nth-child(1) { --sb: #456f3c; }   /* module 1, green  */
+.sb-step:nth-child(2) { --sb: #2d6f80; }   /* module 2, blue   */
+.sb-step:nth-child(3) { --sb: #42639f; }   /* module 3, indigo */
+.sb-step:nth-child(4) { --sb: #7d5512; }   /* module 4, amber  */
+.sb-step__n {
+  position: relative;
+  display: grid; place-items: center;
+  width: 1.6rem; height: 1.6rem; border-radius: 50%;
+  background: var(--sb); color: var(--white);
+  font-size: .8rem; font-weight: 700; font-variant-numeric: tabular-nums;
+  box-shadow: 0 0 0 4px var(--white);
+}
+.sb-step__t {
+  margin: var(--sp-3) 0 var(--sp-2);
+  font-family: var(--font-display); font-size: var(--text-base);
+  font-weight: 700; line-height: 1.25; color: var(--leaf-900);
+}
+.sb-step__p { margin: 0; font-size: var(--text-sm); line-height: 1.55; color: var(--gray-600); text-wrap: pretty; }
+
+@media (max-width: 899px) {
+  .sb-seq { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: var(--sp-5); }
+  .sb-step::after { display: none; }
+}
+@media (max-width: 559px) {
+  .sb-seq { grid-template-columns: 1fr; }
+  .sb-step { display: grid; grid-template-columns: 1.6rem minmax(0, 1fr); column-gap: var(--sp-3); }
+  .sb-step__n { grid-row: 1 / span 2; }
+  .sb-step__t { margin-top: .1rem; }
+}
+
+/* ========================================================= 8  EXPLORE ===== */
+/* Five pages as picture cards. The menu reaches every page, so this only
+   names where to start: two "Start here" cards, then the three pages the
+   team is nominated for. A card is one link: photograph, a small label, the
+   page name and one line. Hover lifts the photograph slightly and underlines
+   the name; focus is the page's own ring. */
+.xp .lede { margin-bottom: var(--sp-6); }
+.xp-cards {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; gap: var(--sp-4);
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+.xp-card { grid-column: span 2; }
+.xp-card--big { grid-column: span 3; }
+.xp-card a {
+  display: flex; flex-direction: column; height: 100%;
+  border-radius: var(--radius); overflow: hidden;
+  background: var(--white); box-shadow: 0 0 0 1px var(--gray-200);
+  color: inherit; text-decoration: none;
+  transition: box-shadow .2s ease, transform .2s ease;
+}
+.xp-card img {
+  display: block; width: 100%; aspect-ratio: 16 / 9; height: auto; object-fit: cover;
+  transition: transform .4s ease;
+}
+.xp-card--big img { aspect-ratio: 21 / 9; }
+.xp-card img.xp-card__dark { background: #000; object-fit: contain; }
+.xp-card__k {
+  margin: var(--sp-4) var(--sp-4) 0;
+  font-size: .6875rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--leaf-700);
+}
+.xp-card__k--prize { display: inline-flex; align-items: center; gap: .4rem; color: #7d5512; }
+.xp-card__k--prize::before {
+  content: ""; width: .55rem; height: .55rem; border-radius: 50%; background: #c2984e;
+  box-shadow: 0 0 0 2px rgb(194 152 78 / .3);
+}
+.xp-card__name {
+  margin: .3rem var(--sp-4) 0;
+  font-family: var(--font-display); font-size: 1.25rem; font-weight: 700; line-height: 1.2; color: var(--leaf-900);
+}
+.xp-card--big .xp-card__name { font-size: 1.5rem; }
+.xp-card__name::after { content: " \2192"; color: var(--leaf-700); }
+.xp-card__line {
+  margin: .35rem var(--sp-4) var(--sp-4);
+  font-size: var(--text-sm); line-height: 1.5; color: var(--gray-600); text-wrap: pretty;
+}
+.xp-card a:hover { box-shadow: 0 0 0 1px var(--leaf-200), 0 8px 24px rgb(7 11 9 / .08); }
+.xp-card a:hover img { transform: scale(1.03); }
+.xp-card a:hover .xp-card__name { text-decoration: underline; text-underline-offset: .15em; }
+.xp-card a:focus-visible { outline: 2px solid var(--leaf-700); outline-offset: 3px; }
+@media (prefers-reduced-motion: reduce) { .xp-card a, .xp-card img { transition: none; } .xp-card a:hover img { transform: none; } }
+
+@media (max-width: 899px) {
+  .xp-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .xp-card, .xp-card--big { grid-column: span 1; }
+}
+@media (max-width: 559px) {
+  .xp-cards { grid-template-columns: 1fr; }
+}
+/* with scripting off there is no menu at the top: drop the sentence about it */
+@media (scripting: none) { .xp-menu { display: none; } }
+
+/* ============================================================== FOOTER ==== */
+/* footer2 comes from page.css; the homepage loads it for that alone.
+   page.css paints it grey-50 for every page on the wiki; the homepage keeps to
+   white and ink, so it is overridden here and nowhere else. */
+.footer2 { background: var(--white); }
+
+/* 1 Oct (students: "... with a / protein"). The synbio title runs to one
+   line where it fits and breaks into two even lines where it does not. */
+.sb__head .band__title { max-width: 36ch; text-wrap: balance; }
