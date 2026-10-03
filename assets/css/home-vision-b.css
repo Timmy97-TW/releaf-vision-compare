@@ -112,3 +112,18 @@
 }
 @media (max-width: 639px) { .vlb-gloss { font-size: var(--text-base); } }
 @media (min-width: 900px) { .vlb-gloss { max-width: none; white-space: nowrap; } }
+
+/* ---- version D (#vision-d, .vld): one daylight picture, lit by home-vision-d.js ----
+   Same stage and words. The land is a single daylight layer; a canvas
+   multiplied over it (.vld-light) is the night and the first light. Without
+   script the land is simply dimmed to first light. One scroll takes it from
+   the first field to the whole valley with the sun up. */
+.vld .vlb-layer[data-layer="land"] { filter: brightness(.62) saturate(.92); }
+.vld.is-live .vlb-layer[data-layer="land"] { filter: none; }
+.vld.is-live .vlb-art { opacity: 0; transition: opacity .5s ease; }
+.vld.is-live.is-ready .vlb-art { opacity: 1; }
+.vld-light { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; mix-blend-mode: multiply; }
+.vld .vlb-line { max-width: none; }
+.vld .vlb-line span.vld-l { display: block; white-space: nowrap; }
+.vld.is-live:not(.is-still) .vlb-run { height: calc(var(--vlb-h) + 85svh); }
+@media (max-width: 420px) { .vld { --vlb-fs: clamp(1.9rem, 9.4vw, 2.4rem); } }

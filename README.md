@@ -11,6 +11,10 @@ homepage, "Every farmer a biomanufacturer."
   are drawn by code (AI-assisted) in the manner of her painting; they are not
   her drawing.
 
+- **D** is C refined: one scroll takes it from the first field to the whole
+  valley while the sun rises; the picture is sharper; her own reactor drawing
+  stands at every dot; paddies, orchards and more are added (also by code).
+
 Scroll through each section to see it play. Her five original frames are at the
 bottom of the page. The site menu at the top links to wiki pages that are not
 part of this repository.
