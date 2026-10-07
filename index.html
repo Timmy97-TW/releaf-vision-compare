@@ -305,7 +305,8 @@
           if (!t) return;
           e.preventDefault();
           var top = t.getBoundingClientRect().top + window.pageYOffset - (parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--nav-h")) || 68);
-          window.scrollTo({ top: top, behavior: "smooth" });
+          var instant = document.hidden || (window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches);
+          window.scrollTo({ top: top, behavior: instant ? "auto" : "smooth" });
           history.replaceState(null, "", a.getAttribute("href"));
         });
       });
