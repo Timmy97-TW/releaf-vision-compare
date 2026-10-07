@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="assets/css/page.css" />
   <link rel="stylesheet" href="assets/css/home.css?v=20261001-home28" />
   <link rel="stylesheet" href="assets/css/home-vision.css?v=20261001-home28" />
-  <link rel="stylesheet" href="assets/css/home-vision-b.css?v=mock4" />
+  <link rel="stylesheet" href="assets/css/home-vision-b.css?v=mock5" />
   <style>
     .mk { background: #fffbe6; border-block: 1px solid #f0e2a8; padding: .9rem 0; font-size: .9375rem; color: #4a3d0a; }
     .mk .band__inner { display: flex; flex-wrap: wrap; gap: .4rem 1.5rem; align-items: baseline; }
@@ -142,7 +142,7 @@
     </div>
   </section>
 
-  <div class="mk" id="mk-d"><div class="band__inner"><b>D &middot; C refined</b><span>One scroll: the sun rises as the camera pulls back. Sharper picture, her reactor at every dot, more farm detail (drawn by code, AI-assisted).</span><a href="#mk-a">Back to A</a><a href="#mk-c">Back to C</a></div></div>
+  <div class="mk" id="mk-d"><div class="band__inner"><b>D &middot; C refined</b><span>One scroll: the sun rises as the camera pulls back. Sharper picture, her reactor at every dot, more farm detail (drawn by code, AI-assisted).</span><a href="#mk-a">Back to A</a><a href="#mk-c">Back to C</a><a href="#mk-e">Jump to E</a></div></div>
 
   <section class="band band--dark vlb vld" id="vision-d" data-vld data-img="assets/img/home/vision-student-d" aria-labelledby="vision-d-title">
     <div class="band__inner vlb-head">
@@ -175,6 +175,39 @@
     </div>
   </section>
 
+  <div class="mk" id="mk-e"><div class="band__inner"><b>E (v5) &middot; Her valley, to the horizon</b><span>D laid out wide: her fields run on in perspective to far, hazy ridges under a tall sky; her hill and her cliff frame the view from the corners; reactor lights reach the skyline. Every pixel is hers or D&rsquo;s, re-placed by code (build/vision-student-e.py).</span><a href="#mk-a">Back to A</a><a href="#mk-d">Back to D</a><a href="#mk-src">Her original frames</a></div></div>
+
+  <section class="band band--dark vlb vld vle" id="vision-e" data-vle data-img="assets/img/home/vision-student-e" aria-labelledby="vision-e-title">
+    <div class="band__inner vlb-head">
+      <p class="vlb-intro">Built from the needs of one farm,<br /> one field at a time.</p>
+    </div>
+    <div class="vlb-run" id="vle-run">
+      <div class="vlb-stage">
+        <div class="vlb-art" role="img"
+             aria-label="A hand-drawn valley at first light, seen from above a green hill: a patchwork of fields runs away to a far, hazy line of mountains under a wide sky, a river winding into the distance. Farmhouses, trees, palms, paddies and farmers in conical hats stand among the near fields; a dark cliff rises at the right. In every field, near and far, a small reactor glows green and lights that field and no other.">
+          <img class="vlb-layer" data-layer="sky-night" style="left:0.0000%;top:0.0000%;width:100.0000%;height:67.1392%"
+               src="assets/img/home/vision-student/sky-night.webp" width="2048" height="876" alt="" loading="lazy" decoding="async" />
+          <img class="vlb-layer" data-layer="sky-dawn" style="left:0.0000%;top:0.0000%;width:100.0000%;height:67.1392%"
+               src="assets/img/home/vision-student/sky-dawn.webp" width="2048" height="876" alt="" loading="lazy" decoding="async" />
+          <img class="vlb-layer" data-layer="sun" style="left:74.6436%;top:56.6881%;width:5.3320%;height:7.0361%"
+               src="assets/img/home/vision-student/sun.webp" width="156" height="156" alt="" loading="lazy" decoding="async" />
+          <img class="vlb-layer" data-layer="land" style="left:0.0000%;top:51.5464%;width:100.0000%;height:48.4536%"
+               src="assets/img/home/vision-student-e/land.webp" width="4096" height="1504" alt="" loading="lazy" decoding="async" />
+          <img class="vlb-layer" data-layer="close" style="left:44.6289%;top:78.2861%;width:14.0137%;height:9.4716%"
+               src="assets/img/home/vision-student-e/close.webp" width="1920" height="983" alt="" loading="lazy" decoding="async" />
+          <img class="vlb-layer" data-layer="reactor" style="left:51.1479%;top:82.9001%;width:0.7100%;height:1.3022%"
+               src="assets/img/home/vision-student/reactor.webp" width="251" height="349" alt="" loading="lazy" decoding="async" />
+        </div>
+        <div class="vlb-sky">
+          <div class="band__inner">
+            <h2 class="vlb-line" id="vision-e-title"><span class="vld-l">Every farmer</span><span class="vld-l">a biomanufacturer<span class="vlb-stop">.</span></span></h2>
+            <p class="vlb-gloss">Toward a future where plant protection with synbio lies in every farmer&rsquo;s hand.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="mk-src" id="mk-src">
     <div class="band__inner">
       <h2>The student&rsquo;s original frames</h2>
@@ -198,12 +231,14 @@
   <script src="assets/js/home-vision-b.js?v=mock4" defer></script>
   <script src="assets/js/home-vision-d-data.js?v=mock4" defer></script>
   <script src="assets/js/home-vision-d.js?v=mock4" defer></script>
-  <!-- mock only: ?vlb=<0..1>&only=d shows one version alone, held at that point, for screenshots; ?solo=d shows it alone, free to scroll -->
+  <script src="assets/js/home-vision-e-data.js?v=mock5" defer></script>
+  <script src="assets/js/home-vision-e.js?v=mock5" defer></script>
+  <!-- mock only: ?vlb=<0..1>&only=d (or e) shows one version alone, held at that point, for screenshots; ?solo=d shows it alone, free to scroll -->
   <script>
     if (/[?&](vlb|solo)=/.test(location.search)) {
       var only = (/[?&](?:only|solo)=(\w)/.exec(location.search) || [0, "b"])[1];
       [].forEach.call(document.querySelectorAll(".mk, #vision, .vlb, .vlb-head"), function (el) {
-        if (!(el.classList.contains("vlb") && (el.getAttribute("data-vlb") === only || (only === "d" && el.hasAttribute("data-vld"))))) el.style.display = "none";
+        if (!(el.classList.contains("vlb") && (el.getAttribute("data-vlb") === only || (only === "d" && el.hasAttribute("data-vld")) || (only === "e" && el.hasAttribute("data-vle"))))) el.style.display = "none";
       });
     }
   </script>

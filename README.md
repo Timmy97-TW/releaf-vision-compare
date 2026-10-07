@@ -15,6 +15,13 @@ homepage, "Every farmer a biomanufacturer."
   valley while the sun rises; the picture is sharper; her own reactor drawing
   stands at every dot; paddies, orchards and more are added (also by code).
 
+- **E (v5)** is D laid out to a far horizon. Her field plane is re-projected
+  in perspective and continued, with her own fields tiled, to a hazy skyline;
+  her mountains are pushed back into layered ridges under a taller sky; her
+  hill and her cliff frame the view from the front corners; reactor lights run
+  out to the horizon. Every pixel is hers or D's, re-placed by
+  `build/vision-student-e.py` (in this repository).
+
 Scroll through each section to see it play. Her five original frames are at the
 bottom of the page. The site menu at the top links to wiki pages that are not
 part of this repository.

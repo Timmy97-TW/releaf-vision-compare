@@ -127,3 +127,7 @@
 .vld .vlb-line span.vld-l { display: block; white-space: nowrap; }
 .vld.is-live:not(.is-still) .vlb-run { height: calc(var(--vlb-h) + 85svh); }
 @media (max-width: 420px) { .vld { --vlb-fs: clamp(1.9rem, 9.4vw, 2.4rem); } }
+
+/* ---- version E (#vision-e, .vle): D's stage and light, the valley laid out to a far horizon ----
+   One scroll, a little longer, from the first field to the whole plain. */
+.vle.is-live:not(.is-still) .vlb-run { height: calc(var(--vlb-h) + 110svh); }
