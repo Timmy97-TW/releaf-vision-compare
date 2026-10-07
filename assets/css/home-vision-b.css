@@ -131,3 +131,34 @@
 /* ---- version E (#vision-e, .vle): D's stage and light, the valley laid out to a far horizon ----
    One scroll, a little longer, from the first field to the whole plain. */
 .vle.is-live:not(.is-still) .vlb-run { height: calc(var(--vlb-h) + 110svh); }
+
+/* ---- version F (#vision-f, .vlf): A's composition in her manner; D's stage and light ---- */
+.vlf.is-live:not(.is-still) .vlb-run { height: calc(var(--vlb-h) + 110svh); }
+
+/* ---- the version switcher (mock page only): a pill bar at the foot of the screen ---- */
+.vnav {
+  position: fixed; left: 50%; bottom: max(.75rem, env(safe-area-inset-bottom)); z-index: 60;
+  transform: translateX(-50%);
+  display: flex; gap: .2rem; padding: .3rem;
+  background: rgb(7 11 9 / .84); border: 1px solid rgb(255 255 255 / .14); border-radius: 999px;
+  box-shadow: 0 8px 28px rgb(0 0 0 / .35);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  font-family: var(--font-display, inherit);
+}
+.vnav a {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  min-width: 2.9rem; padding: .3rem .55rem; border-radius: 999px;
+  color: var(--leaf-100); text-decoration: none; line-height: 1.05;
+  transition: background .2s ease, color .2s ease;
+}
+.vnav a b { font-size: .95rem; font-weight: 750; letter-spacing: -.01em; }
+.vnav a small { font-size: .62rem; opacity: .7; margin-top: .1rem; letter-spacing: .02em; }
+.vnav a:hover { background: rgb(255 255 255 / .1); }
+.vnav a.is-current { background: var(--sig-green); color: var(--ink); }
+.vnav a.is-current small { opacity: .85; }
+@media (max-width: 520px) {
+  .vnav { gap: .1rem; padding: .22rem; }
+  .vnav a { min-width: 2.3rem; padding: .25rem .4rem; }
+  .vnav a b { font-size: .85rem; }
+  .vnav a small { display: none; }
+}

@@ -22,6 +22,18 @@ homepage, "Every farmer a biomanufacturer."
   out to the horizon. Every pixel is hers or D's, re-placed by
   `build/vision-student-e.py` (in this repository).
 
+- **F (v6)** is A's composition painted in her manner. The scene is A's (the
+  wiki's generator, `build/valley_a.py`: camera, field grid, river, hills,
+  ridges, farms); nothing of A's rendering is kept. Code paints every surface
+  the way she paints: her field colours with soft edges and pale paths, crop
+  dots and furrows, her olive hills with contour folds, her river, her
+  mountains and sky, and her houses, trees, greenhouses, farmers and truck
+  (cut from D by `build/extract_sprites.py`) standing in A's places
+  (`build/vision-student-f.py`).
+
+A pill bar at the foot of the screen switches between the versions (the arrow
+keys step through them).
+
 Scroll through each section to see it play. Her five original frames are at the
 bottom of the page. The site menu at the top links to wiki pages that are not
 part of this repository.

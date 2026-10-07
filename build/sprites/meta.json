@@ -1,0 +1,52 @@
+{
+ "house_red": {
+  "px_per_art": 2,
+  "h": 56,
+  "w": 93
+ },
+ "house_red2": {
+  "px_per_art": 2,
+  "h": 90,
+  "w": 104
+ },
+ "house_grey": {
+  "px_per_art": 2,
+  "h": 97,
+  "w": 112
+ },
+ "tree_lawn": {
+  "px_per_art": 2,
+  "h": 88,
+  "w": 96
+ },
+ "tree_small": {
+  "px_per_art": 2,
+  "h": 37,
+  "w": 35
+ },
+ "greenhouse": {
+  "px_per_art": 2,
+  "h": 97,
+  "w": 144
+ },
+ "farmer_blue": {
+  "px_per_art": 5,
+  "h": 152,
+  "w": 100
+ },
+ "farmer_red": {
+  "px_per_art": 5,
+  "h": 152,
+  "w": 153
+ },
+ "tree_big": {
+  "px_per_art": 5,
+  "h": 193,
+  "w": 200
+ },
+ "truck": {
+  "px_per_art": 5,
+  "h": 78,
+  "w": 160
+ }
+}
